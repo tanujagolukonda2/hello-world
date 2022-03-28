@@ -1,16 +1,26 @@
 pipeline {
     agent any
     stages {
-        stage('build') {
+        stage('compile stage') {
             steps {
-                sh 'mvn --version'
-                sh 'echo "Hello World"'
+                withMaven(maven :'maven3.8.5'){
+                sh 'mvn clean compile'
             }
         }
-        stage('Test') {
+    } 
+      stage('Testing stage') {
             steps {
-                sh 'echo "success"'
+                withMaven(maven :'maven3.8.5'){
+                sh 'mvn test'
             }
         }
+    } 
+      stage('Deployment stage') {
+            steps {
+                withMaven(maven :'maven3.8.5'){
+                sh 'mvn  deploy'
+            }
+        }
+    } 
     }
 }
